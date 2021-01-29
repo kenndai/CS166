@@ -26,7 +26,9 @@ CREATE TABLE Graduate (SSN numeric(9, 0), name text,
 CREATE TABLE Project (pno INTEGER, sponsor text,
 						start_date date, end_date date,
 						budget INTEGER,
-						PRIMARY KEY(pno));
+						SSN numeric(9, 0),
+						PRIMARY KEY(pno),
+						FOREIGN KEY(SSN) REFERENCES Professor(SSN), ON DELETE NO ACTION);
 
 CREATE TABLE work_dept (time_pc float,
 						SSN numeric(9, 0), name text,	
@@ -35,4 +37,11 @@ CREATE TABLE work_dept (time_pc float,
 						dno INTEGER, dname text, office text,
 						PRIMARY KEY(SSN, dno),
 						FOREIGN KEY (SSN) REFERENCES Professor(SSN), ON DELETE NO ACTION);
+
+CREATE TABLE work_proj (pno INTEGER, sponsor text,
+						start_date date, end_date date,
+						budget INTEGER,
+						SSN numeric(9, 0), name text,
+						age INTEGER, deg_pg text,
+
 
