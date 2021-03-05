@@ -28,7 +28,7 @@ from (	select nyc.supplier, sum(nyc.on_hand)
 where nyc_total.supplier = sfo_total.supplier and nyc_total.sum > sfo_total.sum;
 
 -- List all suppliers that supply parts in NYC that aren't supplied by anyone in SFO
-select count(nyc.supplier)
+select distinct nyc.supplier
 from part_nyc nyc
 where nyc.part_number NOT IN (	select sfo.part_number
 				from part_sfo sfo);
