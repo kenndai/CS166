@@ -1,0 +1,47 @@
+First run:
+Query time without indexes
+Query1: 19.781 ms
+Query2: 26.701 ms
+Query3: 30.083 ms
+Query4: 92672.717 ms
+Query5: 207.389 ms
+Query6: 54.201 ms
+Query time with indexes
+Query1: 17.987 ms
+Query2: 17.498 ms
+Query3: 21.694 ms
+Query4: 30437.276 ms
+Query5: 25.813 ms
+Query6: 3.348 ms
+
+Second run:
+Query time without indexes
+Query1: 20.878 ms
+Query2: 27.971 ms
+Query3: 30.178 ms
+Query4: 92811.017 ms
+Query5: 110.768 ms
+Query6: 31.484 ms
+Query time with indexes
+Query1: 17.197 ms
+Query2: 16.780 ms
+Query3: 20.214 ms
+Query4: 30279.376 ms
+Query5: 25.519 ms
+Query6: 3.285 ms
+
+Third run:
+Query time without indexes
+Query1: 21.410 ms
+Query2: 28.625 ms
+Query3: 31.076 ms
+Query4: 92687.943 ms
+Query5: 187.408 ms
+Query6: 49.663 ms
+Query time with indexes
+Query1: 15.670 ms
+Query2: 15.489 ms
+Query3: 18.766 ms
+Query4: 30269.060 ms
+Query5: 25.308 ms
+Query6: 3.102 ms
