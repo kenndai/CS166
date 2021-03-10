@@ -1,8 +1,8 @@
-CREATE SEQUENCE part_number_seq START WITH 50000;
+:CREATE SEQUENCE part_number_seq START WITH 50000;
 --nextval(name), currval(name), setval(name)
 
 
---your task is to implement a trigger and procedure to automatically 0populate part number with
+--your task is to implement a trigger and procedure to automatically populate part number with
 --incremented value upon insertion of the new row into part nyc. After that your insert statements
 --should not include value for part number.
 
@@ -11,10 +11,7 @@ CREATE SEQUENCE part_number_seq START WITH 50000;
 CREATE LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION auto_part_number() RETURNS "trigger" AS $insert_record$
     BEGIN
-        --return the next value of the sequence
-	IF (TG_OP) = 'INSERT') THEN
-	    --insert?
-	    --return?		
+        RETURN nextval(part_number_seq);
     END;
 LANGUAGE plpgsql VOLATILE;
 
