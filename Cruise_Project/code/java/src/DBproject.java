@@ -296,6 +296,17 @@ public class DBproject{
 	}//end readChoice
 
 	public static void AddShip(DBproject esql) {//1
+		try {
+			String query = " ";
+			Systen.out.print("\tEnter ship detals: ");
+			String input = in.readLine();
+			query += input;
+
+			int rowCount = esql.executeQuery(query);
+			System.out.println ("total row(s): " + rowCount);
+		} catch(Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public static void AddCaptain(DBproject esql) {//2
