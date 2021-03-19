@@ -1,0 +1,35 @@
+First run:
+Query time for unclustered index
+: 119.697 ms
+: 131.764 ms
+: 8358.772 ms
+: 2870.392 ms
+Query time for clustered index
+: 37.256 ms
+: 43.620 ms
+: 2758.177 ms
+: 175.163 ms
+
+Second run:
+Query time for unclustered index
+: 131.432 ms
+: 131.188 ms
+: 8239.556 ms
+: 2834.892 ms
+Query time for clustered index
+: 72.607 ms
+: 66.384 ms
+: 2449.770 ms
+: 288.541 ms
+
+Third run:
+Query time for unclustered index
+: 129.787 ms
+: 132.124 ms
+: 8076.664 ms
+: 2898.002 ms
+Query time for clustered index
+: 77.247 ms
+: 67.906 ms
+: 3968.329 ms
+: 581.079 ms
