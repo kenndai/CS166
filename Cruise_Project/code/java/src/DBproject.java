@@ -300,7 +300,7 @@ public class DBproject{
 
 			String query = String.format("select s.id from Ship s");
 			List<List<String>> ship_ID_relation = esql.executeQueryAndReturnResult(query);
-			int ship_id = ship_ID_relation.size() + 1; //id is the next in order
+			int ship_id = ship_ID_relation.size(); //id is the next in order
 
 			//reading strings
 			System.out.print("Please enter the make of the ship: ");
@@ -332,7 +332,7 @@ public class DBproject{
 
 			String query = String.format("select c.id from Captain c");
 			List<List<String>> cap_ID_relation = esql.executeQueryAndReturnResult(query);
-			int cap_id = cap_ID_relation.size() + 1;
+			int cap_id = cap_ID_relation.size();
 
 			//reading strings
 			System.out.print("Please enter the captain's full name: ");
@@ -359,7 +359,7 @@ public class DBproject{
 
 			String query = String.format("select c.cnum from Cruise c");
 			List<List<String>> cnum_relation = esql.executeQueryAndReturnResult(query);
-			int cnum = cnum_relation.size() + 1;
+			int cnum = cnum_relation.size();
 
 			//reading ints 
 			System.out.print("Please enter the cost of a ticket: ");
@@ -399,7 +399,7 @@ public class DBproject{
 			
 			String query = String.format("select r.rnum from Reservation r");
 			List<List<String>> rnum_relation = esql.executeQueryAndReturnResult(query);
-			int rnum = rnum_relation.size() + 1; //assign rnum as the next in the sequence
+			int rnum = rnum_relation.size(); //assign rnum as the next in the sequence
 
 			//reading ints
  			System.out.print("Please enter your customer ID: ");
