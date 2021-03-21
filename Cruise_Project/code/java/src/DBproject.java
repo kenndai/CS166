@@ -410,7 +410,8 @@ public class DBproject{
 			//check if there were any reservations made already
 			query = String.format("select * from Reservation r where r.ccid = %d AND r.cid = %d", cust_id, cnum);
 			int rowCount = esql.executeQuery(query);
-			if (rowCount >= 0) {
+
+			if (rowCount > 0) {
 				System.out.println ("You have already made a reservation for this cruise");
 				rowCount = esql.executeQueryAndPrintResult(query);
 				System.out.println ("total row(s): " + rowCount);
