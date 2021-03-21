@@ -434,6 +434,7 @@ public class DBproject{
 
 			//update numsold when a customer books
 			query = String.format("update Cruise set num_sold = num_sold + 1 where cnum = %d", cnum);
+			esql.executeUpdate(query);
 
 			//print out new tuple
 			query = String.format("select * from Reservation r where rnum = %d", rnum);
