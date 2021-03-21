@@ -311,12 +311,12 @@ public class DBproject{
 			System.out.print("Please enter the number of seats on the ship: ");
 			String seats= in.readLine();
 
-			String query = String.format("INSERT INTO Ship (id, make, model, age, seats) VALUES (%d ,'%s', '%s', '%d', '%d')", ship_id, make, model, age, seats);
+			query = String.format("INSERT INTO Ship (id, make, model, age, seats) VALUES (%d ,'%s', '%s', '%d', '%d')", ship_id, make, model, age, seats);
 			esql.executeUpdate(query);
 
 			//print the new tuple
-			query = String.format("select * from Captain c where c.id = %d", cap_id); 
-			int rowCount = esql.executeAndPrintResult(query);
+			query = String.format("select * from Captain c where c.id = %d", ship_id); 
+			int rowCount = esql.executeQueryAndPrintResult(query);
 
 			System.out.println ("total row(s): " + rowCount);
 
@@ -342,7 +342,7 @@ public class DBproject{
 
 			//print the new tuple
 			query = String.format("select * from Captain c where c.id = %d", cap_id); 
-			int rowCount = esql.executeAndPrintResult(query);
+			int rowCount = esql.executeQueryAndPrintResult(query);
 
 			System.out.println ("total row(s): " + rowCount);
 
@@ -373,12 +373,12 @@ public class DBproject{
 			System.out.print("Please enter the departure port: ");
 			String departure_port = in.readLine();
 			
-			String query = String.format("INSERT INTO Cruise (cnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_port, departure_port) VALUES (%d , %d , %d, %d, '%s', '%s', '%s', '%s')", cnum, cost, numsold, numstops, departure_date, arrival_date, arrival_port, departure_port);
+			query = String.format("INSERT INTO Cruise (cnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_port, departure_port) VALUES (%d , %d , %d, %d, '%s', '%s', '%s', '%s')", cnum, cost, numsold, numstops, departure_date, arrival_date, arrival_port, departure_port);
 			esql.executeUpdate(query);
 
 			//print the new tuple
-			query = String.format("select * from Captain c where c.id = %d", cap_id); 
-			int rowCount = esql.executeAndPrintResult(query);
+			query = String.format("select * from Cruise c where c.num = %d", cnum); 
+			int rowCount = esql.executeQueryAndPrintResult(query);
 
 			System.out.println ("total row(s): " + rowCount);
 		} catch(Exception e) {
@@ -414,9 +414,9 @@ public class DBproject{
 
 			//number of available seats
 			query = String.format("select s.seats - count(r.status) from CruiseInfo c, Ships s, Reservation r where c.cruise_id = %d AND c.ship_id = s.id AND r.cid = %d AND r.status = 'C' OR r.status = 'R'", cnum, cnum);
-			List<List<String>> available_seats = esql.executeAndReturnResults(query); 
-			int openSeats = available_seats.get(0).get(0);
-			
+			List<List<String>> available_seats = esql.executeQueryAndReturnResult(query); 
+
+			int openSeats = Integer.parseInt(available_seats.get(0).get(0));
 			char status;
 			status = openSeats <= 0 ? 'W' : 'R';
 				
@@ -426,7 +426,7 @@ public class DBproject{
 
 			//print out new tuple
 			query = String.format("select * from Reservation r where rnum = %d", rnum);
-			rowCount = esql.executeAndPrintResult(query);
+			rowCount = esql.executeQueryAndPrintResult(query);
 
 			System.out.println ("total row(s): " + rowCount);
 
