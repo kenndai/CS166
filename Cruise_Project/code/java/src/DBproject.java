@@ -383,7 +383,7 @@ public class DBproject{
 			esql.executeUpdate(query);
 
 			//print the new tuple
-			query = String.format("select * from Cruise c where c.num = %d", cnum); 
+			query = String.format("select * from Cruise c where c.cnum = %d", cnum); 
 			int rowCount = esql.executeQueryAndPrintResult(query);
 
 			System.out.println ("total row(s): " + rowCount);
