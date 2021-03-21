@@ -454,6 +454,7 @@ public class DBproject{
 
 			String query = String.format("select count(s.seats) - count(r.status) as Available_Seats from CruiseInfo c, Ship s, Reservation r where c.cruise_id = %d AND c.ship_id = s.id AND r.cid = %d AND r.status = 'C' OR r.status = 'R'", cnum, cnum);
 	//		String query = String.format("select count(s.seats) - taken.seatsTaken from CruiseInfo c, Ship s, (select count(*) from Reservation r where r.status = 'C' OR r.status = 'R' AND r.cid = %d) as taken where c.cruise_id = %d AND c.ship_id = s.id", cnum, cnum);
+			System.out.println("TESTTTING");
 			int rowCount = esql.executeQueryAndPrintResult(query);
 
 			System.out.println ("total row(s): " + rowCount);
