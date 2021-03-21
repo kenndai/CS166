@@ -298,21 +298,28 @@ public class DBproject{
 	public static void AddShip(DBproject esql) {//1
 		try {
 
-			System.out.print("Please enter a ship ID: ");
-			String ship_id = in.readLine();
-			System.out.print("Please enter the make: ");
+			String query = String.format("select s.ship_ID from Ship s");
+			List<List<String>> ship_ID_relation = esql.executeQueryAndReturnResult(query);
+			int ship_id = ship_ID_relation.size() + 1; //id is the next in order
+
+			System.out.print("Please enter the make of the ship: ");
 			String make = in.readLine();
-			System.out.print("Please enter the model: ");
+			System.out.print("Please enter the ship's model: ");
 			String model = in.readLine();
-			System.out.print("Please enter the age: ");
+			System.out.print("Please enter the age of the ship: ");
 			String age = in.readLine();
-			System.out.print("Please enter the number of seats: ");
+			System.out.print("Please enter the number of seats on the ship: ");
 			String seats= in.readLine();
 
 			String query = String.format("INSERT INTO Ship (id, make, model, age, seats) VALUES (%d ,'%s', '%s', '%d', '%d')", ship_id, make, model, age, seats);
+			esql.executeUpdate(query);
 
-			int rowCount = esql.executeUpdate(query);
+			//print the new tuple
+			query = String.format("select * from Captain c where c.id = %d", cap_id); 
+			int rowCount = esql.executeAndPrintResult(query);
+
 			System.out.println ("total row(s): " + rowCount);
+
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -320,17 +327,25 @@ public class DBproject{
 
 	public static void AddCaptain(DBproject esql) {//2
 		try {
-			System.out.print("Please enter the captain's ID ");
-			String cap_id = in.readLine();
+
+			String query = String.format("select c.cap_ID from Captain c");
+			List<List<String>> cap_ID_relation = esql.executeQueryAndReturnResult(query);
+			int cap_id = cap_ID_relation.size() + 1;
+
 			System.out.print("Please enter the captain's full name: ");
 			String fullname = in.readLine();
 			System.out.print("Please enter their nationality: ");
 			String nationality = in.readLine();
 			
-			String query = String.format("INSERT INTO Captain (id, fullname, nationality) VALUES (%d, '%s', '%s')", cap_id, fullname, nationality);
+			query = String.format("INSERT INTO Captain (id, fullname, nationality) VALUES (%d, '%s', '%s')", cap_id, fullname, nationality);
+			esql.executeUpdate(query);
 
-			int rowCount = esql.executeUpdate(query);
+			//print the new tuple
+			query = String.format("select * from Captain c where c.id = %d", cap_id); 
+			int rowCount = esql.executeAndPrintResult(query);
+
 			System.out.println ("total row(s): " + rowCount);
+
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
 		}
@@ -338,8 +353,11 @@ public class DBproject{
 
 	public static void AddCruise(DBproject esql) {//3
 		try {
-			System.out.print("Please enter the cruise number: ");
-			String cnum = in.readLine();
+
+			String query = String.format("select c.cnum from Cruise c");
+			List<List<String>> cnum_relation = esql.executeQueryAndReturnResult(query);
+			int cnum = cnum_relation.size() + 1;
+
 			System.out.print("Please enter the cost of a ticket: ");
 			String cost = in.readLine();
 			System.out.print("Please enter the number of tickets sold: ");
@@ -356,8 +374,12 @@ public class DBproject{
 			String departure_port = in.readLine();
 			
 			String query = String.format("INSERT INTO Cruise (cnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_port, departure_port) VALUES (%d , %d , %d, %d, '%s', '%s', '%s', '%s')", cnum, cost, numsold, numstops, departure_date, arrival_date, arrival_port, departure_port);
+			esql.executeUpdate(query);
 
-			int rowCount = esql.executeUpdate(query);
+			//print the new tuple
+			query = String.format("select * from Captain c where c.id = %d", cap_id); 
+			int rowCount = esql.executeAndPrintResult(query);
+
 			System.out.println ("total row(s): " + rowCount);
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
@@ -366,16 +388,46 @@ public class DBproject{
 	}
 
 	public static void BookCruise(DBproject esql) {//4
-		// Given a customer and a Cruise that he/she wants to book, add a reservation to the DB
+		// Given a customer and a Cruise that he/she wants to book, determine the status of the reservation and add the reservation to the database with the appropriate status
+
 		try {
+			
+			String query = String.format("select r.rnum from Reservation r");
+			List<List<String>> rnum_relation = esql.executeQueryAndReturnResult(query);
+			int rnum = rnum_relation.size() + 1; //assign rnum as the next in the sequence
+
  			System.out.print("Please enter your customer ID: ");
 			String cust_id= in.readLine();
-			System.out.print("Please enter a cruise number: ");
+			System.out.print("Please enter the cruise number of the cruise you'd like to book: ");
 			String cnum = in.readLine();
 
-			String query = String.format("select r.status from cruise cru, customer cust, reservation r where cust.id = %d AND cru.cnum = %d", cust_id, cnum);
+			query = String.format("select * from Reservation r where r.ccid = %d AND r.cid = %d", cust_id, cnum);
+			int rowCount = esql.executeQuery(query);
 
-			int rowCount = esql.execute(query);
+			//check if there were any reservations made already
+			if (rowCount >= 0) {
+				System.out.println ("You have already made a reservation for this cruise");
+				rowCount = esql.executeQueryAndPrintResult(query);
+				System.out.println ("total row(s): " + rowCount);
+				return;	
+			}
+
+			//number of available seats
+			query = String.format("select s.seats - count(r.status) from CruiseInfo c, Ships s, Reservation r where c.cruise_id = %d AND c.ship_id = s.id AND r.cid = %d AND r.status = 'C' OR r.status = 'R'", cnum, cnum);
+			List<List<String>> available_seats = esql.executeAndReturnResults(query); 
+			int openSeats = available_seats.get(0).get(0);
+			
+			char status;
+			status = openSeats <= 0 ? 'W' : 'R';
+				
+			//inserting tuple
+			query = String.format("insert into Reservation(rnum, ccid, cid, status) values (%d, %d, %d, '%s')", rnum, cust_id, cnum, status);
+			esql.executeUpdate(query);
+
+			//print out new tuple
+			query = String.format("select * from Reservation r where rnum = %d", rnum);
+			rowCount = esql.executeAndPrintResult(query);
+
 			System.out.println ("total row(s): " + rowCount);
 
 		} catch(Exception e) {
@@ -391,8 +443,9 @@ public class DBproject{
 			System.out.print("Please enter the cruise's departure date: ");
 			String departure_date = in.readLine();
 
-			String query = String.format("select s.seats - count(r.status) from CruiseInfo c, Ships s, reservation r where c.cruise_id = %d AND c.ship_id = s.id AND r.cruise_id = %d AND r.status = 'C'", cnum, cnum);
+			String query = String.format("select s.seats - count(r.status) as Available_Seats from CruiseInfo c, Ships s, Reservation r where c.cruise_id = %d AND c.ship_id = s.id AND r.cid = %d AND r.status = 'C' OR r.status = 'R'", cnum, cnum);
 			int rowCount = esql.executeQueryAndPrintResult(query);
+
 			System.out.println ("total row(s): " + rowCount);
 
 		} catch(Exception e) {
@@ -417,13 +470,14 @@ public class DBproject{
 	public static void FindPassengersCountWithStatus(DBproject esql) {//7
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.
 		try {
- 			System.out.print("Please enter cruise number: ");
+ 			System.out.print("Please enter a cruise number: ");
 			String cnum = in.readLine();
-			System.out.print("Please enter passenger status: ");
+			System.out.print("Please enter a reservation status: ");
 			String status = in.readLine();
 
-			String query = String.format("select r.status, count(*) from Reservation r, Cruise c where r.status = '%s' AND c.cnum = %d", status, cnum);
+			String query = String.format("select r.status, count(*) from Reservation r where r.status = '%s' AND r.cid = %d", status, cnum);
 			int rowCount = esql.executeQueryAndPrintResult(query);
+
 			System.out.println ("total row(s): " + rowCount);
 
 		} catch(Exception e) {
