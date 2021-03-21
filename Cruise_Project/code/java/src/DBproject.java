@@ -298,7 +298,7 @@ public class DBproject{
 	public static void AddShip(DBproject esql) {//1
 		try {
 
-			String query = String.format("select s.ship_ID from Ship s");
+			String query = String.format("select s.id from Ship s");
 			List<List<String>> ship_ID_relation = esql.executeQueryAndReturnResult(query);
 			int ship_id = ship_ID_relation.size() + 1; //id is the next in order
 
@@ -315,7 +315,7 @@ public class DBproject{
 			esql.executeUpdate(query);
 
 			//print the new tuple
-			query = String.format("select * from Captain c where c.id = %d", ship_id); 
+			query = String.format("select * from Ship s where s.id = %d", ship_id); 
 			int rowCount = esql.executeQueryAndPrintResult(query);
 
 			System.out.println ("total row(s): " + rowCount);
@@ -328,7 +328,7 @@ public class DBproject{
 	public static void AddCaptain(DBproject esql) {//2
 		try {
 
-			String query = String.format("select c.cap_ID from Captain c");
+			String query = String.format("select c.id from Captain c");
 			List<List<String>> cap_ID_relation = esql.executeQueryAndReturnResult(query);
 			int cap_id = cap_ID_relation.size() + 1;
 
