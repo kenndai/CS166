@@ -484,7 +484,8 @@ public class DBproject{
 			System.out.print("Please enter a reservation status: ");
 			String status = in.readLine();
 
-			String query = String.format("select r.status, count(*) from Reservation r where r.status = '%s' AND r.cid = %d", status, cnum);
+			String query = String.format(
+			"select r.status, count(*) from Reservation r where r.status = '%s' AND r.cid = %d group by r.status", status, cnum);
 			int rowCount = esql.executeQueryAndPrintResult(query);
 
 			System.out.println ("total row(s): " + rowCount);
