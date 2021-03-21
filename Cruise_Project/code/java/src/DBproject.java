@@ -311,7 +311,7 @@ public class DBproject{
 			System.out.print("Please enter the number of seats on the ship: ");
 			String seats= in.readLine();
 
-			query = String.format("INSERT INTO Ship (id, make, model, age, seats) VALUES (%d ,'%s', '%s', '%d', '%d')", ship_id, make, model, age, seats);
+			query = String.format("INSERT INTO Ship (id, make, model, age, seats) VALUES (%d ,'%s', '%s', %d, %d)", ship_id, make, model, age, seats);
 			esql.executeUpdate(query);
 
 			//print the new tuple
@@ -373,7 +373,7 @@ public class DBproject{
 			System.out.print("Please enter the departure port: ");
 			String departure_port = in.readLine();
 			
-			query = String.format("INSERT INTO Cruise (cnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_port, departure_port) VALUES (%d , %d , %d, %d, '%s', '%s', '%s', '%s')", cnum, cost, numsold, numstops, departure_date, arrival_date, arrival_port, departure_port);
+			query = String.format("INSERT INTO Cruise (cnum, cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_port, departure_port) VALUES (%d, %d, %d, %d, '%s', '%s', '%s', '%s')", cnum, cost, numsold, numstops, departure_date, arrival_date, arrival_port, departure_port);
 			esql.executeUpdate(query);
 
 			//print the new tuple
