@@ -407,7 +407,7 @@ public class DBproject{
 			System.out.print("Please enter the cruise number of the cruise you'd like to book: ");
 			int cnum = Integer.parseInt(in.readLine());
 
-			//check if there were any reservations made already
+			//check if there were any reservations made already for that pair of customer and cruise
 			query = String.format("select * from Reservation r where r.ccid = %d AND r.cid = %d", cust_id, cnum);
 			int rowCount = esql.executeQuery(query);
 
@@ -419,14 +419,14 @@ public class DBproject{
 			}
 
 			//number of available seats
-			query = String.format("select count(s.seats) - count(r.status) from CruiseInfo c, Ship s, Reservation r where c.cruise_id = %d AND c.ship_id = s.id AND r.cid = %d AND r.status = 'C' OR r.status = 'R'", cnum, cnum);
+			String query = String.format("select s.seats - c.numsold as available_seats from CruiseInfor ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
 
-			List<List<String>> available_seats = esql.executeQueryAndReturnResult(query); 
+			List<List<String>> availableSeatsRelation = esql.executeQueryAndReturnResults(query);
+			int numSeats = availableSeatsRelation.get(0).get(0);
 
 			char status;
-			int openSeats = Integer.parseInt(available_seats.get(0).get(0));
-			status = openSeats <= 0 ? 'W' : 'R';
-				
+			status = numSeats > 0 : R ? W;
+			
 			//inserting tuple
 			query = String.format("insert into Reservation(rnum, ccid, cid, status) values (%d, %d, %d, '%s')", rnum, cust_id, cnum, status);
 			esql.executeUpdate(query);
@@ -452,14 +452,9 @@ public class DBproject{
 			System.out.print("Please enter the cruise's departure date: ");
 			String departure_date = in.readLine();
 
-			String query = String.format("select count(*) from Reservation r where r.status = 'C' OR r.status = 'R' AND r.cid = %d", cnum);
+			String query = String.format("select s.seats - c.numsold as available_seats from CruiseInfor ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println ("total row(s): " + rowCount);
-
-			String query = String.format("select count(s.seats) from CruiseInfo c, Ship s where c.cruise_id = %d AND c.ship_id = s.id", cnum);
-			int rowCount = esql.executeQueryAndPrintResult(query);
-			System.out.println ("total row(s): " + rowCount);
-
 
 		} catch(Exception e) {
 			System.err.println(e.getMessage());
