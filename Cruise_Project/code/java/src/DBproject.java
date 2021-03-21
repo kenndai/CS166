@@ -426,11 +426,14 @@ public class DBproject{
 
 			char status;
 			if (numSeats > 0) status = 'R';
-			else status = 'C';
+			else status = 'W';
 			
 			//inserting tuple
 			query = String.format("insert into Reservation(rnum, ccid, cid, status) values (%d, %d, %d, '%s')", rnum, cust_id, cnum, status);
 			esql.executeUpdate(query);
+
+			//update numsold when a customer books
+			query = String.format("update Cruise set num_sold = num_sold + 1 where cnum = %d", cnum);
 
 			//print out new tuple
 			query = String.format("select * from Reservation r where rnum = %d", rnum);
