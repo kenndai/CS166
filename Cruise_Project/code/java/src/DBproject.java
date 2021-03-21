@@ -419,7 +419,7 @@ public class DBproject{
 			}
 
 			//number of available seats
-			query = String.format("select s.seats - count(r.status) from CruiseInfo c, Ships s, Reservation r where c.cruise_id = %d AND c.ship_id = s.id AND r.cid = %d AND r.status = 'C' OR r.status = 'R'", cnum, cnum);
+			query = String.format("select s.seats - count(r.status) from CruiseInfo c, Ship s, Reservation r where c.cruise_id = %d AND c.ship_id = s.id AND r.cid = %d AND r.status = 'C' OR r.status = 'R'", cnum, cnum);
 
 			List<List<String>> available_seats = esql.executeQueryAndReturnResult(query); 
 
