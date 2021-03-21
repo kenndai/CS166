@@ -421,8 +421,8 @@ public class DBproject{
 			//number of available seats
 			query = String.format("select s.seats - c.numsold as available_seats from CruiseInfor ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
 
-			List<List<String>> availableSeatsRelation = esql.executeQueryAndReturnResults(query);
-			int numSeats = availableSeatsRelation.get(0).get(0);
+			List<List<String>> availableSeatsRelation = esql.executeQueryAndReturnResult(query);
+			int numSeats = Integer.parseInt(availableSeatsRelation.get(0).get(0));
 
 			char status;
 			if (numSeats > 0) status = 'R';
