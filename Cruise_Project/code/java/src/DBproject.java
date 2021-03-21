@@ -419,13 +419,14 @@ public class DBproject{
 			}
 
 			//number of available seats
-			String query = String.format("select s.seats - c.numsold as available_seats from CruiseInfor ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
+			query = String.format("select s.seats - c.numsold as available_seats from CruiseInfor ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
 
 			List<List<String>> availableSeatsRelation = esql.executeQueryAndReturnResults(query);
 			int numSeats = availableSeatsRelation.get(0).get(0);
 
 			char status;
-			status = numSeats > 0 : R ? W;
+			if (numSeats > 0) status = 'R';
+			else status = 'C';
 			
 			//inserting tuple
 			query = String.format("insert into Reservation(rnum, ccid, cid, status) values (%d, %d, %d, '%s')", rnum, cust_id, cnum, status);
