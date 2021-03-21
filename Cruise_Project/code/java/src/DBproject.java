@@ -419,7 +419,7 @@ public class DBproject{
 			}
 
 			//number of available seats
-			query = String.format("select s.seats - c.numsold as available_seats from CruiseInfor ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
+			query = String.format("select s.seats - c.numsold as available_seats from CruiseInfo ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
 
 			List<List<String>> availableSeatsRelation = esql.executeQueryAndReturnResult(query);
 			int numSeats = Integer.parseInt(availableSeatsRelation.get(0).get(0));
@@ -453,7 +453,7 @@ public class DBproject{
 			System.out.print("Please enter the cruise's departure date: ");
 			String departure_date = in.readLine();
 
-			String query = String.format("select s.seats - c.numsold as available_seats from CruiseInfor ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
+			String query = String.format("select s.seats - c.numsold as available_seats from CruiseInfo ci, Ship s, Cruise c where ci.cruise_id = %d AND ci.ship_id = s.id", cnum);
 			int rowCount = esql.executeQueryAndPrintResult(query);
 			System.out.println ("total row(s): " + rowCount);
 
